@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Interval } from "../containers/Interval";
 
 export function TimerComponent({ interval, control, disableControl }) {
   const [intervalId, setIntervalId] = useState();
   const [count, setCount] = useState(0);
+
+  useEffect(() => () => clearInterval(intervalId), [intervalId]);
 
   const updateTimeByInterval = () =>
     setCount(prevState => prevState + interval);
