@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Interval } from "../containers/Interval";
 
 export function TimerComponent({ interval, control, disableControl }) {
-  const [intervalId, setIntervalId] = useState();
   const [count, setCount] = useState(0);
+  const intervalRef = useRef();
 
-  useEffect(() => () => clearInterval(intervalId), [intervalId]);
+  useEffect(() => () => clearInterval(intervalRef.current), []);
 
   const updateTimeByInterval = () =>
     setCount(prevState => prevState + interval);
 
   function handleStart() {
-    const id = setInterval(updateTimeByInterval, interval * 1000);
+    intervalRef.current = setInterval(updateTimeByInterval, interval * 1000);
     disableControl(true);
-    setIntervalId(id);
   }
 
   function handleStop() {
-    clearInterval(intervalId);
+    clearInterval(intervalRef.current);
     disableControl(false);
     setCount(0);
   }
